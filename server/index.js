@@ -25,7 +25,7 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
 
-    // Collections
+    // Collections on DataBase
     const jobsCollection = client.db("soloSphereDB").collection("jobs");
 
     // Save a Job Data in DB (POST Operation)
