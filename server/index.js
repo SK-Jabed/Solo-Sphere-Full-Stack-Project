@@ -25,8 +25,24 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
 
+    // Collections
+    const jobsCollection = client.db("soloSphereDB").collection("jobs");
+
+    // Save a Job Data in DB (POST Operation)
+    app.post("/add-job", async (req, res) => {
+      const jobData = req.body;
+      const addedJob = await jobsCollection.insertOne(jobData);
+      res.send(addedJob);
+    })
+
+    // Get All Jobs Data from DB (GET Operation)
+    app.get("/jobs", async (req, res) => {
+      const result = await jobsCollection.find().toArray();
+      res.send(result);
+    })
+
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
