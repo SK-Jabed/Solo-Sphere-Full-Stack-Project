@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config();
 
 const port = process.env.PORT || 5000;
@@ -33,13 +33,50 @@ async function run() {
       const jobData = req.body;
       const addedJob = await jobsCollection.insertOne(jobData);
       res.send(addedJob);
-    })
+    });
 
     // Get All Jobs Data from DB (GET Operation)
     app.get("/jobs", async (req, res) => {
       const result = await jobsCollection.find().toArray();
       res.send(result);
-    })
+    });
+
+    // Get All Jobs Posted by a Specific User
+    app.get("/jobs/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { "buyer.email": email };
+      const postedJobs = await jobsCollection.find(query).toArray();
+      res.send(postedJobs);
+    });
+
+    // Get a Single Job Data by Id from DB
+    app.get("/job/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const singleJob = await jobsCollection.findOne(query);
+      res.send(singleJob);
+    });
+
+    // Update a Job Data in DB (PUT Operation)
+    app.put("/update-job/:id", async (req, res) => {
+      const jobData = req.body;
+      const id = req.params.id;
+      const updatedDoc = {
+        $set: jobData,
+      }
+      const query = { _id: new ObjectId(id) };
+      const options = { upsert: true }
+      const updatedJob = await jobsCollection.updateOne(query, updatedDoc, options);
+      res.send(updatedJob);
+    });
+
+    // Delete a Job from DB (DELETE Operation)
+    app.delete("/job/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const deletedJob = await jobsCollection.deleteOne(query);
+      res.send(deletedJob);
+    });
 
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
