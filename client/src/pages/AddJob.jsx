@@ -49,7 +49,7 @@ const AddJob = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-      navigate("/my-posted-jobs")
+      navigate("/my-posted-jobs");
     } 
     catch (err) {
       console.log(err);
@@ -61,14 +61,6 @@ const AddJob = () => {
         timer: 1500,
       });
     }
-    // Make a POST Request to Server
-
-    // .then((data) => {
-    //   if (data.insertedId) {
-        
-    //   }
-    // })
-    // console.log(data);
   };
 
   return (
