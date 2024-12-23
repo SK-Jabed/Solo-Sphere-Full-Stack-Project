@@ -92,7 +92,7 @@ run().catch(console.dir)
 
 
 app.get('/', (req, res) => {
-  res.send('Hello from SoloSphere Server....');
+  res.send('Hello from SoloSphere Server...');
 })
 
 app.listen(port, () => console.log(`Server running on port ${port}`))
